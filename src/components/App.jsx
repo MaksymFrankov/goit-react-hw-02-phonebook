@@ -1,6 +1,7 @@
 // import { render } from "@testing-library/react";
 import React from "react";
 import { Component } from "react";
+import { v4 as uuid } from 'uuid';
 
 export class App extends Component {
 state = {
@@ -20,20 +21,36 @@ handleChange = event => {
   const { name, value } = event.currentTarget;
 
   this.setState({
-    [name]: value
+    [name]: value,
   })
 }
+hendleFilter = (e) => {
+ 
+  console.log(e.target.value);
+  let a = this.state.contacts;
+  const filtredArr = a.filter(contact => 
+    contact.name.toLowerCase().includes(e.target.value.toLowerCase()));
 
-handleSubmit = e => {
-e.preventDefault();
-  
+  this.setState({
+    contacts: [...filtredArr]
+  });
 }
-
+handleSubmit = e => {
+  const unique_id = uuid();
+  e.preventDefault();
+  this.setState ({
+    contacts: [...this.state.contacts, {id:unique_id, name: e.target.name.value, number: e.target.number.value}],
+    name: '',
+    number: ''
+});
+e.target.name.value = '';
+e.target.number.value = '';
+}
 render() {
-  return (
-    <form onSubmit={this.handleSubmit}>
-      <label htmlFor="name">
-        Name
+return (
+  <form onSubmit={this.handleSubmit}>
+    <label htmlFor="name">
+      Name
         <input
           type="text"
           name="name"
@@ -43,28 +60,38 @@ render() {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
       />
-      </label>
-      <label htmlFor="number">
-        Number
+    </label>
+    <label htmlFor="number">
+      Number
+    <input
+      type="tel"
+      name="number"
+      title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+      pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+      required
+    />
+    </label>
+    
+    <label htmlFor="filter">
+    Filter
       <input
-        type="tel"
-        name="number"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        required
+        type="text"
+        name="filter"
+        onChange={this.hendleFilter}
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$" 
+        title="filter may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
       />
-      
-      <ul>
+    </label>
+    <ul>
     {this.state.contacts.map((person) => (
         <li key={person.id}>{person.name}  {person.number}</li>
     ))}
     </ul>
       
-      </label>
-      <button type="submit">Add contact</button>
-      {/* {console.log(this.state.contacts)} */}
-    </form>
-    
-  )
+    <button type="submit">Add contact</button>
+    {/* {console.log(this.state.contacts)} */}
+  </form>
+  
+)
 }
 };

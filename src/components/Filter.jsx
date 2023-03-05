@@ -14,6 +14,9 @@ class Filter extends Component {
         this.props.onFilter(value);
       }
 
+  
+        
+  
     render () {
     return (
      <label htmlFor="filter">

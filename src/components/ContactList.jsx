@@ -5,6 +5,12 @@ class ContactList extends Component {
         contacts: this.props.contacts,
      }
     
+    // repeatCheck = e => {
+    //     if (this.props.filter.toLowerCase().includes(this.props.contacts.name.toLowerCase()))
+    //         alert('1')
+    //   } 
+    
+    
     render () {
     return (
     <ul>

@@ -38,9 +38,9 @@ return (
   
     <div>
       <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler}/>
+        <ContactForm onSubmit={this.formSubmitHandler} contacts={this.state.contacts}/>
       <h2>Contact List</h2>
-        <Filter onFilter={this.handleFilter}/>
+        <Filter onFilter={this.handleFilter} contacts={this.state.contacts}/>
         <ContactList contacts={this.state.contacts} filter={this.state.filter}/>
     </div>
 )

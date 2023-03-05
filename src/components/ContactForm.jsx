@@ -6,8 +6,8 @@ class ContactForm extends Component {
         number: ''
      }
     
-     handleChange = event => {
-        const { name, value } = event.currentTarget;
+     handleChange = e => {
+        const { name, value } = e.currentTarget;
       
         this.setState({
           [name]: value,
@@ -16,14 +16,18 @@ class ContactForm extends Component {
 
       handleSubmit = e => {
         e.preventDefault();
-
-        this.props.onSubmit(this.state);
-        this.setState(
-            { 
-                name: '',
-                number: ''
-             }
-        )
+        console.log();
+        const existingNames = this.props.contacts.map(cur => cur.name.toLowerCase());
+        if (!existingNames.includes(this.state.name.toLowerCase())) {
+          this.props.onSubmit(this.state);
+          this.setState(
+            {
+              name: '',
+              number: ''
+            }
+          )
+        }
+        else { alert (1)}
       }
 
 

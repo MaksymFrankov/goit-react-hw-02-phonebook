@@ -1,16 +1,7 @@
 import React, {Component} from "react";
 
 class ContactList extends Component {
-    state = { 
-        contacts: this.props.contacts,
-     }
-    
-    // repeatCheck = e => {
-    //     if (this.props.filter.toLowerCase().includes(this.props.contacts.name.toLowerCase()))
-    //         alert('1')
-    //   } 
-    
-    
+ 
     render () {
     return (
     <ul>
@@ -21,7 +12,7 @@ class ContactList extends Component {
         : contact.name.toLowerCase().includes(this.props.filter)
         })
     .map((person) => (
-        <li key={person.id}>{person.name}  {person.number}</li>
+        <li key={person.id}>{person.name}  {person.number}<button onClick={() => this.props.onDel(person.name)}>del</button></li>
     ))}
     </ul>
     )

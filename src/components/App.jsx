@@ -24,15 +24,31 @@ export class App extends Component {
   }
 
   formSubmitHandler = data => {
-    const unique_id = uuid();
-    this.setState({
-      contacts: [...this.state.contacts, { id: unique_id, name: data.name, number: data.number }],
-    });
+      const existingNames = this.state.contacts.map((cur) => cur.name.toLowerCase());
+  
+      if (!existingNames.includes(data.name.toLowerCase())) {
+        const unique_id = uuid();
+        this.setState({
+          contacts: [...this.state.contacts, { id: unique_id, name: data.name, number: data.number }],
+        });
+        
+      } else {
+        alert("This name already exists!");
+      }
+    
+
   }
 
   handleFilter = input => {
     this.setState({ filter: input });
   }
+
+  filterContacts = contacts => {
+    let filtredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(this.state.filter),
+    );
+    return filtredContacts;
+  };
 
   handleDel = name => {
     const filteredContacts = this.state.contacts.filter(contact => contact.name !== name);
@@ -43,10 +59,12 @@ export class App extends Component {
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler} contacts={this.state.contacts} />
+        <ContactForm onSubmit={this.formSubmitHandler} />
         <h2>Contact List</h2>
-        <Filter onFilter={this.handleFilter} contacts={this.state.contacts} />
-        <ContactList contacts={this.state.contacts} filter={this.state.filter} onDel={this.handleDel} />
+        <Filter onFilter={this.handleFilter} />
+        <ContactList 
+        contacts={this.filterContacts(this.state.contacts)}
+        onDel={this.handleDel} />
       </div>
     )
   }

@@ -5,11 +5,6 @@ class ContactList extends Component {
     return (
       <ul>
         {this.props.contacts
-          .filter((contact) => {
-            return this.props.filter.toLowerCase() === ""
-              ? contact
-              : contact.name.toLowerCase().includes(this.props.filter);
-          })
           .map((person) => (
             <li key={person.id}>
               {person.name} {person.number}

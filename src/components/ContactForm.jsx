@@ -16,18 +16,16 @@ class ContactForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const existingNames = this.props.contacts.map((cur) => cur.name.toLowerCase());
-
-    if (!existingNames.includes(this.state.name.toLowerCase())) {
-      this.props.onSubmit(this.state);
-      this.setState({
+   
+    this.props.onSubmit(this.state);
+    this.setState (
+      {
         name: "",
         number: "",
-      });
-    } else {
-      alert("This name already exists!");
-    }
-  };
+      }
+    )
+  }
+
 
   render() {
     return (

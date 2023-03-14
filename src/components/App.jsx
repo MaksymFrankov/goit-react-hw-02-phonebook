@@ -24,38 +24,42 @@ export class App extends Component {
   }
 
   formSubmitHandler = data => {
-      const existingNames = this.state.contacts.map((cur) => cur.name.toLowerCase());
+    const existingContact = this.state.contacts.find(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase()
+    );
   
-      if (!existingNames.includes(data.name.toLowerCase())) {
-        const unique_id = uuid();
-        this.setState({
-          contacts: [...this.state.contacts, { id: unique_id, name: data.name, number: data.number }],
-        });
-        
-      } else {
-        alert("This name already exists!");
-      }
-    
-
+    if (existingContact) {
+      alert("This name already exists!");
+      return 
+    } else {
+     
+            const unique_id = uuid();
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, { id: unique_id, name: data.name, number: data.number }],
+      }));
+    }
   }
 
   handleFilter = input => {
     this.setState({ filter: input });
   }
 
-  filterContacts = contacts => {
-    let filtredContacts = contacts.filter(contact =>
+  filterContacts = () => {
+   
+    return this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(this.state.filter),
     );
-    return filtredContacts;
   };
 
-  handleDel = name => {
-    const filteredContacts = this.state.contacts.filter(contact => contact.name !== name);
-    this.setState({ contacts: filteredContacts });
-  }
+handleDel = name => {
+  this.setState(prevState => ({
+     contacts: prevState.contacts.filter(contact => contact.name !== name)
+  }));
+}
 
   render() {
+    const filteredContacts = this.filterContacts();
+    
     return (
       <div>
         <h1>Phonebook</h1>
@@ -63,7 +67,7 @@ export class App extends Component {
         <h2>Contact List</h2>
         <Filter onFilter={this.handleFilter} />
         <ContactList 
-        contacts={this.filterContacts(this.state.contacts)}
+        contacts={filteredContacts}
         onDel={this.handleDel} />
       </div>
     )
